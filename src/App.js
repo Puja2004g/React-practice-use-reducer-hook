@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import { useReducer } from 'react';
 import './App.css';
+import { type } from '@testing-library/user-event/dist/type';
+
+const reducer = (state, action) =>{
+  if(action.type === "buy_ingredients") return {money: state.money - 10};
+  if(action.type === "sell_a_meal") return {money: state.money + 10};
+  if(action.type === "celebrity_visit") return {money:state.money + 5000};
+
+  return state;
+}
 
 function App() {
+  const initialState = {money:100};
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Wallet: {state.money}</h1>
+      <div>
+        <button onClick={() => dispatch({type: "buy_ingredients"})}>Buy Ingredients</button>
+        <button onClick={() => dispatch({type: "sell_a_meal"})}>Sell A Meal</button>
+        <button onClick={()=>dispatch({type: "celebrity_visit"})}>Celebrity Visit</button>
+      </div>
     </div>
   );
 }
